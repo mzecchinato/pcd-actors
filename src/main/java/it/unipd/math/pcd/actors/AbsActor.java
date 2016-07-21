@@ -37,6 +37,9 @@
  */
 package it.unipd.math.pcd.actors;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
  * Defines common properties of all actors.
  *
@@ -45,6 +48,8 @@ package it.unipd.math.pcd.actors;
  * @since 1.0
  */
 public abstract class AbsActor<T extends Message> implements Actor<T> {
+
+    protected Queue<T> mailbox = new ConcurrentLinkedQueue<>();
 
     /**
      * Self-reference of the actor

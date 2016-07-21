@@ -39,6 +39,7 @@ package it.unipd.math.pcd.actors;
 
 import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -53,7 +54,11 @@ public abstract class AbsActorSystem implements ActorSystem {
     /**
      * Associates every Actor created with an identifier.
      */
-    private Map<ActorRef<?>, Actor<?>> actors;
+    private static Map<ActorRef<?>, Actor<?>> actors = new HashMap<>();
+
+    public static Map<ActorRef<?>, Actor<?>> getActors() {
+        return actors;
+    }
 
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {
