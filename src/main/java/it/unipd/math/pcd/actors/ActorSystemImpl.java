@@ -9,6 +9,11 @@ import java.util.Iterator;
  */
 public final class ActorSystemImpl extends AbsActorSystem {
 
+    /**
+     * Stops a specific {@code actor} and removes it from {@code ActorSystem}
+     *
+     * @param actorRef Reference of {@code actor} to stop
+     */
     @Override
     public synchronized void stop(ActorRef<?> actorRef) {
         AbsActor<?> actor = (AbsActor<?>) getActors().get(actorRef);
@@ -26,6 +31,9 @@ public final class ActorSystemImpl extends AbsActorSystem {
         getActors().remove(actorRef);
     }
 
+    /**
+     * Stops and removes all {@code actor} from the {@code system}
+     */
     @Override
     public synchronized void stop() {
         Iterator actors = getActors().entrySet().iterator();
@@ -36,6 +44,12 @@ public final class ActorSystemImpl extends AbsActorSystem {
         }
     }
 
+    /**
+     * Creates a reference to insert a new {@code actor} in the {@code system}
+     *
+     * @param mode Type of {@code actor}
+     * @return Reference of a new {@code actor} in the {@code system}
+     */
     @Override
     protected ActorRef createActorReference(ActorMode mode) {
         if (mode == ActorMode.REMOTE) {
@@ -47,6 +61,12 @@ public final class ActorSystemImpl extends AbsActorSystem {
         }
     }
 
+    /**
+     * Gets the {@code Actor} with a specific {@code ActorRef}
+     *
+     * @param actorRef Reference of the {@code Actor} to find
+     * @return Actor instance
+     */
     public Actor<? extends Message> findActor(ActorRef<?> actorRef) {
         Actor<? extends Message> actor = getActors().get(actorRef);
         if(actor != null) {

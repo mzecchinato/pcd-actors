@@ -56,9 +56,15 @@ public abstract class AbsActorSystem implements ActorSystem {
      */
     private static final Map<ActorRef<?>, Actor<?>> actors = new HashMap<>();
 
+    /**
+     * Gets the {@code actors} in the {@code system}
+     *
+     * @return Map of all {@code actors}
+     */
     public static Map<ActorRef<?>, Actor<?>> getActors() {
         return actors;
     }
+
 
     @Override
     public ActorRef<? extends Message> actorOf(Class<? extends Actor> actor, ActorMode mode) {

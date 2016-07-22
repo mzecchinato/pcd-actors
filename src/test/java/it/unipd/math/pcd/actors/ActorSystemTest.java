@@ -93,10 +93,11 @@ public class ActorSystemTest {
     }
 
     @Test(expected = NoSuchActorException.class)
-    public void shouldStopAnActorAndThisCouldNotBeAbleToReceiveNewMessages() {
+    public void shouldStopAnActorAndThisCouldNotBeAbleToSendNewMessages() {
         ActorRef ref1 = system.actorOf(TrivialActor.class);
+        ActorRef ref2 = system.actorOf(TrivialActor.class);
         system.stop(ref1);
-        ref1.send(new TrivialMessage(), ref1);
+        ref1.send(new TrivialMessage(), ref2);
     }
 
     @Test(expected = NoSuchActorException.class)
@@ -104,5 +105,13 @@ public class ActorSystemTest {
         ActorRef ref1 = system.actorOf(TrivialActor.class);
         system.stop(ref1);
         system.stop(ref1);
+    }
+
+    @Test(expected = NoSuchActorException.class)
+    public void shouldStopAnActorAndThisCouldNotBeAbleToReceiveNewMessages() {
+        ActorRef ref1 = system.actorOf(TrivialActor.class);
+        ActorRef ref2 = system.actorOf(TrivialActor.class);
+        system.stop(ref1);
+        ref2.send(new TrivialMessage(), ref1);
     }
 }
