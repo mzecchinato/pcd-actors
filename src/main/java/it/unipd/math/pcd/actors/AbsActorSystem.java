@@ -54,7 +54,7 @@ public abstract class AbsActorSystem implements ActorSystem {
     /**
      * Associates every Actor created with an identifier.
      */
-    private static Map<ActorRef<?>, Actor<?>> actors = new HashMap<>();
+    private static final Map<ActorRef<?>, Actor<?>> actors = new HashMap<>();
 
     public static Map<ActorRef<?>, Actor<?>> getActors() {
         return actors;

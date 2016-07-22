@@ -38,6 +38,7 @@
 package it.unipd.math.pcd.actors;
 
 import it.unipd.math.pcd.actors.*;
+import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
 
 /**
  * Decorates an {@link ActorRef} adding the ability to get the underlying actor associated to the reference.
@@ -61,8 +62,11 @@ public class TestActorRef<T extends Message> implements ActorRef<T> {
      * @return An actor
      */
     public Actor<T> getUnderlyingActor(ActorSystem system) {
-        // TODO To implement
-        return null;
+        Actor<T> actor = (Actor<T>) ((ActorSystemImpl)system).findActor(reference);
+        if(actor != null) {
+            return actor;
+        }
+        throw new NoSuchActorException("Actor doesn't exist");
     }
 
     @Override

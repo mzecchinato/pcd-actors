@@ -49,7 +49,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public abstract class AbsActor<T extends Message> implements Actor<T> {
 
-    protected Queue<T> mailbox = new ConcurrentLinkedQueue<>();
+    private final Queue<T> mailbox = new ConcurrentLinkedQueue<>();
+
+    private boolean active = true;
+
+    public Queue<T> getMailbox() {
+        return mailbox;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActiveState(boolean active) {
+        this.active = active;
+    }
 
     /**
      * Self-reference of the actor
@@ -71,4 +85,18 @@ public abstract class AbsActor<T extends Message> implements Actor<T> {
         this.self = self;
         return this;
     }
+
+    public ActorRef<T> getSelf() {
+        return self;
+    }
+
+    public synchronized void manageMessage(ActorRef<T> sender, T message) {
+        this.sender = sender;
+        receive(message);
+        mailbox.remove(message);
+        if(mailbox.isEmpty()) {
+            notifyAll();
+        }
+    }
+
 }
