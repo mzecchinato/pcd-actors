@@ -3,6 +3,7 @@ package it.unipd.math.pcd.actors;
 import it.unipd.math.pcd.actors.exceptions.NoSuchActorException;
 
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Mattia on 21/07/2016.
@@ -38,9 +39,16 @@ public final class ActorSystemImpl extends AbsActorSystem {
     public synchronized void stop() {
         Iterator actors = getActors().entrySet().iterator();
         while(actors.hasNext()) {
-            AbsActor actor = (AbsActor) actors.next();
+            AbsActor<?> actor = (AbsActor<?>) ((Map.Entry) actors.next()).getValue();
             actor.setActiveState(false);
-            stop(actor.getSelf());
+            while(!actor.getMailbox().isEmpty()) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            actors.remove();
         }
     }
 

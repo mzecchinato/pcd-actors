@@ -114,4 +114,22 @@ public class ActorSystemTest {
         system.stop(ref1);
         ref2.send(new TrivialMessage(), ref1);
     }
+
+    @Test(expected = NoSuchActorException.class)
+    public void shouldStopAllActorAndTheseCouldNotBeAbleToReceiveNewMessages() {
+        ActorRef ref1 = system.actorOf(TrivialActor.class);
+        ActorRef ref2 = system.actorOf(TrivialActor.class);
+        system.stop();
+        ActorRef ref3 = system.actorOf(TrivialActor.class);
+        ref3.send(new TrivialMessage(), ref1);
+    }
+
+    @Test
+    public void shouldStopAllActor() {
+        ActorRef ref1 = system.actorOf(TrivialActor.class);
+        ActorRef ref2 = system.actorOf(TrivialActor.class);
+        system.stop();
+        Assert.assertEquals("ActorSystem must be empty according to stop method",
+                0, AbsActorSystem.getActors().size());
+    }
 }
